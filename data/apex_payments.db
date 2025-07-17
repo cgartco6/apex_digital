@@ -1,0 +1,11 @@
+CREATE TABLE ledger (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    description TEXT NOT NULL,
+    amount REAL NOT NULL,
+    type TEXT CHECK(type IN ('revenue', 'owner_salary', 'tool_upgrade')),
+    balance REAL NOT NULL
+);
+
+INSERT INTO ledger (date, description, amount, type, balance) 
+VALUES ('2025-07-17', 'System Initialization', 0.0, 'revenue', 0.0);
