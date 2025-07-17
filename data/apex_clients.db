@@ -1,0 +1,29 @@
+CREATE TABLE clients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE,
+    phone TEXT,
+    company TEXT,
+    project_brief TEXT,
+    quote REAL DEFAULT 0.0,
+    paid INTEGER DEFAULT 0,  -- 0 = unpaid, 1 = paid
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE projects (
+    project_id TEXT PRIMARY KEY,
+    client_id INTEGER,
+    features TEXT,
+    status TEXT CHECK(status IN ('pending', 'development', 'testing', 'delivered')),
+    security_hash TEXT,
+    FOREIGN KEY(client_id) REFERENCES clients(id)
+);
+
+CREATE TABLE payments (
+    invoice_id TEXT PRIMARY KEY,
+    client_id INTEGER,
+    amount REAL,
+    payment_date TEXT,
+    transaction_ref TEXT,
+    FOREIGN KEY(client_id) REFERENCES clients(id)
+);
