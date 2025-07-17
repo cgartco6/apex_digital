@@ -1,0 +1,26 @@
+# AI Agent Performance Settings
+resources:
+  max_cpu: 80%    # Windows CPU throttle
+  max_memory: 2GB  # Critical threshold
+
+free_tools:
+  creator_agent:
+    image_generation: leonardo.ai
+    video_creation: pictory.ai
+    voice_synthesis: elevenlabs.io
+  support_agent:
+    chatbot: rasa
+    payments: manual_bank_transfer
+  growth_agent:
+    social_media: buffer
+    email: gmail_smtp
+
+upgrade_triggers:
+  - revenue_threshold: 20000
+    actions: 
+      - upgrade: openai_api->gpt-4-turbo
+      - activate: owner_salary
+  - revenue_threshold: 50000
+    actions:
+      - upgrade: leonardo->pro
+      - upgrade: github->copilot
