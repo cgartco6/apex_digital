@@ -1,0 +1,9 @@
+{
+  "sensitive_fields": ["id_number", "financial_account", "health_status"],
+  "retention_period_days": 90,
+  "required_consents": ["marketing", "data_processing"],
+  "auto_redaction_rules": {
+    "id_number": "/(\\d{2}[01]\\d[0-3]\\d{4}\\d{4})/",
+    "credit_card": "/\\b\\d{4}[ -]?\\d{4}[ -]?\\d{4}[ -]?\\d{4}\\b/"
+  }
+}
