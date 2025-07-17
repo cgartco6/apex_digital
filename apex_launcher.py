@@ -1,6 +1,8 @@
 import os
 import subprocess
 from dotenv import load_dotenv
+sys.path.append('data')
+import popia_compliance_rules  # Security module
 
 # Load environment variables
 load_dotenv()
