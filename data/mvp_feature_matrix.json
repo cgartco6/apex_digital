@@ -1,0 +1,5 @@
+{
+  "ecommerce": ["product_catalog", "cart", "payfast_integration"],
+  "inventory": ["barcode_scan", "stock_alerts", "low_data_mode"],
+  "service_booking": ["calendar", "sms_reminders", "payment_gateways"]
+}
