@@ -1,45 +1,35 @@
-import json
-from flask import Flask, request, jsonify
+import sqlite3
+import datetime
+from dotenv import load_dotenv
 
-app = Flask(__name__)
+load_dotenv()
 
-class SupportAgent:
-    def __init__(self):
-        self.quotes = {}
+# Initialize database
+conn = sqlite3.connect('apex_clients.db')
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS clients
+             (id INTEGER PRIMARY KEY, name TEXT, project TEXT, quote REAL, paid INTEGER)''')
 
-    def generate_quote(self, client_req):
-        # Simple quote generation based on client request
-        # In reality, we would have a pricing model
-        quote_id = f"QUOTE{len(self.quotes)+1}"
-        self.quotes[quote_id] = {
-            "client_req": client_req,
-            "amount": 80000,  # in ZAR
-            "status": "pending"
-        }
-        return quote_id, self.quotes[quote_id]
+def handle_inquiry(query):
+    """AI-powered customer support"""
+    # Connect to free Rasa chatbot
+    response = requests.post(
+        "http://localhost:5005/webhooks/rest/webhook",
+        json={"message": query, "sender": "client"}
+    )
+    return response.json()[0]['text']
 
-    def process_payment(self, quote_id, payment_details):
-        # This would interface with your bank account via an API (if available) or just simulate
-        # For now, we mark as paid
-        if quote_id in self.quotes:
-            self.quotes[quote_id]['status'] = 'paid'
-            return True
-        return False
+def generate_quote(project_details):
+    """Auto-price projects"""
+    complexity = len(project_details['features']) / 3
+    quote = max(15000, complexity * 25000)  # Min R15k project
+    c.execute("INSERT INTO clients (name, project, quote, paid) VALUES (?,?,?,?)",
+              (project_details['client'], str(project_details), quote, 0))
+    conn.commit()
+    return quote
 
-# Simple Flask API to handle support
-@app.route('/quote', methods=['POST'])
-def create_quote():
-    data = request.json
-    agent = SupportAgent()
-    quote_id, quote = agent.generate_quote(data['request'])
-    return jsonify({"quote_id": quote_id, "quote": quote})
-
-@app.route('/pay', methods=['POST'])
-def pay_quote():
-    data = request.json
-    agent = SupportAgent()
-    success = agent.process_payment(data['quote_id'], data['payment_details'])
-    return jsonify({"success": success})
-
-if __name__ == '__main__':
-    app.run(port=5000)
+def process_payment(client_id, amount):
+    """Simulate bank transfer to YOUR account"""
+    c.execute("UPDATE clients SET paid=1 WHERE id=?", (client_id,))
+    conn.commit()
+    print(f"💰 R{amount} transferred to BANK ACC: {os.getenv('ACCOUNT_NUMBER')}")
