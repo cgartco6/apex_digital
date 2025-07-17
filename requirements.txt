@@ -1,0 +1,26 @@
+# Core Dependencies
+python-dotenv==1.0.0
+requests==2.31.0
+Flask==3.0.2
+SQLAlchemy==2.0.25
+psycopg2-binary==2.9.9
+
+# AI & Machine Learning
+transformers==4.40.0
+torch==2.2.1
+tensorflow==2.15.0
+sentencepiece==0.2.0
+diffusers==0.28.0
+accelerate==0.29.3
+
+# Computer Vision & Media
+opencv-python==4.9.0.80
+Pillow==10.2.0
+moviepy==1.0.3
+pydub==0.25.1
+imageio==2.34.0
+
+# Automation & Utilities
+schedule==1.2.1
+beautifulsoup4==4.12.3
+selenium==4.
